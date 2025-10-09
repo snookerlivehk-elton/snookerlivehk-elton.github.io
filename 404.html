@@ -2,26 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redirecting...</title>
+    <title>Snooker Scoreboard</title>
     <script>
-      // GitHub Pages SPA fallback: preserve path/query and redirect to index with ?redirect=
-      (function() {
+      // Early redirect handling for GitHub Pages: rewrite ?redirect= to real path
+      (function () {
         try {
-          var path = window.location.pathname || '/';
-          var search = window.location.search || '';
-          var hash = window.location.hash || '';
-          var base = '/snooker-standalone/';
-          // If already at base, no need to redirect
-          if (path === base || path === base.replace(/\/$/, '')) return;
-          var target = base + '?redirect=' + encodeURIComponent(path + search + hash);
-          window.location.replace(target);
-        } catch (e) {
-          // Fallback: go to base
-          window.location.replace('/snooker-standalone/');
-        }
+          var url = new URL(window.location.href);
+          var params = url.searchParams;
+          var redirect = params.get('redirect');
+          if (redirect) {
+            var parts = url.pathname.split('/').filter(Boolean);
+            var base = '/' + (parts.length > 0 ? parts[0] + '/' : '');
+            var normalized = redirect.charAt(0) === '/' ? redirect.slice(1) : redirect;
+            params.delete('redirect');
+            var qs = params.toString();
+            var target = base + normalized + (qs ? ('?' + qs) : '');
+            if ((url.pathname + url.search) !== target) {
+              window.history.replaceState(null, '', target);
+            }
+          }
+        } catch (e) {}
       })();
     </script>
+    <script type="module" crossorigin src="/assets/index-TGD94VAt.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B-NN582h.css">
   </head>
-  <body></body>
-  </html>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
