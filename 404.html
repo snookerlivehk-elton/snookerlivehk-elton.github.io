@@ -5,17 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecting...</title>
     <script>
-      // GitHub Pages fallback: special-case /admin to admin-login, otherwise SPA redirect to index
+      // GitHub Pages fallback for SPA: redirect unknown paths to index with ?redirect=
       (function() {
         try {
           var path = window.location.pathname || '/';
           var search = window.location.search || '';
           var hash = window.location.hash || '';
-          // Special-case: if visiting /admin or /admin/, redirect to admin-login.html and preserve query/hash
-          if (path === '/admin' || path === '/admin/') {
-            window.location.replace('/admin-login.html' + search + hash);
-            return;
-          }
           var base = '/';
           // If already at base, no need to redirect
           if (path === base || path === base.replace(/\/$/, '')) return;
