@@ -27,6 +27,27 @@
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script>
   </head>
   <body>
+    <script>
+      (function () {
+        try {
+          var shouldRedirect = true;
+          var href = window.location.href || '';
+          // 如果已帶 admin 參數或當前路徑不是測試頁，則不重定向
+          if (href.includes('/admin?') || !href.includes('/admin-login.html')) {
+            shouldRedirect = false;
+          }
+          if (shouldRedirect) {
+            var params = new URLSearchParams(window.location.search || '');
+            var api = params.get('apiUrl') || 'https://api.snookerhk.live';
+            var socket = params.get('socketUrl') || 'https://api.snookerhk.live';
+            var path = params.get('socketPath') || '/socket.io';
+            var token = params.get('token');
+            var qp = '?apiUrl=' + encodeURIComponent(api) + '&socketUrl=' + encodeURIComponent(socket) + '&socketPath=' + encodeURIComponent(path) + (token ? '&token=' + encodeURIComponent(token) : '');
+            window.location.replace('/admin' + qp);
+          }
+        } catch {}
+      })();
+    </script>
     <div class="card">
       <h1>Admin Login – 跨網域實測入口</h1>
       <p class="muted">此頁面由 <span class="kbd">http://localhost:5173</span> 提供，以跨網域測試雲端後端 <span class="kbd">https://api.snookerhk.live</span> 的 CORS 與 Admin 存取。</p>
